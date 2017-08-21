@@ -19,11 +19,14 @@
     <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/sweetalert.css' %}">
     
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/metisMenu.min.js' %}"></script>
     <script src="{% static 'js/sb-admin-2.js' %}"></script> 
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
+
     
     
     
@@ -181,7 +184,7 @@
                             <a href="#"><i class="fa fa-group "></i> 用户中心<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                             	<li>
-                                    <a href="/users/manage">用户管理</a>
+                                    <a href="{% url 'user_manage' %}">用户管理</a>
                                 </li>
                                 <li>
                                     <a href="/user/center">用户配置</a>
@@ -198,6 +201,7 @@
             </div>
             <!-- /.navbar-static-side -->
         </nav>
+        {% block page-content %}
         <div id="page-wrapper">
         	
             <div class="row">
@@ -206,10 +210,12 @@
                 </div>
             </div>
         </div>
+        {% endblock %}
     </div>
-<script type="text/javascript"> 
+    <script type="text/javascript"> 
 
-</script>
+    </script>
+
 </body>
 
 </html>

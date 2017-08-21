@@ -1,0 +1,239 @@
+{% extends 'index.html' %}
+{% block page-content %}
+<div id="page-wrapper">
+    <div class="row">
+         <div class="col-lg-12">
+              <h1 class="page-header"><i class="fa  fa-wrench  "></i> 用户管理中心</h1>
+         </div>
+	</div>
+		
+	<div class="row">
+	<div class="col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa   fa-gear"></i> 用户管理
+			</div>
+			<div class="panel-body">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#home" data-toggle="tab"><i class="fa   fa-user"></i> 用户</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+				    <div class="tab-pane fade in active" id="home">
+					    <div class="row">
+							<div class="col-lg-12">
+								<br>
+								<legend><i class="fa  fa-list-alt  "></i>用户列表</legend>																					
+								<div>											
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												<th class="center">用户名称</th>
+												<th class="center">邮箱地址</th>
+												<th class="hidden-xs center">超级管理员</th>
+												<th class="hidden-480 center">最后登录</th>
+												<th class="center">注册日期</th>
+												<th class="center">是否激活</th>
+												<th class="center">操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for us in userList %}
+												<tr>
+													<td>
+														<label>
+															<span class="lbl"></span>
+															<a href="/user/{{us.id}}">
+																{{ us.username }}
+															</a>
+														</label>
+													</td>		
+													<td>
+														{{ us.email }}
+													</td>																
+													<td class="hidden-480">	
+														{% if us.is_superuser %}
+															<span class="label label-success arrowed">
+																是
+															</span>
+														{% else %}
+															<span class="label label-danger arrowed-in">
+																否
+															</span>												
+														{% endif %}														
+													</td>																
+													<td>
+														{{ us.last_login|date:"Y/m/d H:i:s" }}
+														
+													</td>
+													<td class="hidden-480">
+														{{ us.date_joined|date:"Y/m/d H:i:s" }}														
+														
+													</td>
+													<td class="hidden-480">	
+														{% if us.is_active %}
+															<span class="label label-success arrowed">
+																已激活
+															</span>
+														{% else %}
+															<span class="label label-danger arrowed-in">
+																未激活
+															</span>												
+														{% endif %}														
+													</td>
+													<td>
+														<div class="btn-group-vertical">
+															<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+																<abbr title="用户控制"><i class="fa fa-edit"></i>
+																<span class="caret"></span>
+															</button>
+															<ul class="dropdown-menu">
+																	<li>
+																		{% if us.is_active %}
+																			<a href="javascript:" onclick="onBtnHandleUser_active('{{ us.id}}','{{ us.username }}',1,'取消激活')">取消激活</a>
+																		{% else %}
+																			<a href="javascript:" onclick="onBtnHandleUser_active('{{ us.id}}','{{ us.username }}',0,'确认激活')">激活用户</a>
+																		{% endif %}
+																	</li>													
+																	<li class="divider"></li>					
+																	<li>
+																		<a href="javascript:" onclick="onBtnHandleUser_del('{{ us.id }}','{{ us.username }}','删除用户')">删除用户</a>
+																	</li>														
+															</ul>
+														</div>																	
+													</td>		
+												</tr>
+											{% endfor %}
+											</tbody>
+										</table>
+									</div>													
+									<div class="hr "></div>							
+									<div class="row">
+										<div class="col-sm-5 pull-right">
+											<h4 class="pull-right">
+												Total Users :
+												<span class="red"><code>{{ userList|length }}</code></span>
+											</h4>
+										</div>
+										<div class="col-sm-7 pull-left"> 
+											<button class="btn btn-sm btn-default pull-left" class="btn btn-primary" data-toggle="modal"  data-target="#myAddUserModal">
+											    <i class="fa fa-plus"></i>
+												<span class="bigger-110">新增用户</span>
+											</button>
+										</div>												
+									</div>				                   		
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>  
+	</div>  
+</div>
+
+<div class="modal fade" id="myAddUserModal" tabindex="-1" role="dialog" aria-labelledby="myAddUserModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myAddUserModalLabel">
+					新增用户
+				</h4>
+			</div>
+			<div class="modal-body">
+				<form id="register" class="main form-horizontal">
+					<fieldset>
+						<div class="form-group">
+							<label class="col-sm-2 control-label"><i class="fa fa-user"></i></label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" placeholder="Username" name="username" required/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label"><i class="fa fa-envelope"></i></label>
+							<div class="col-sm-6">
+								<input type="email" class="form-control" placeholder="Email" name="email" required/>
+							</div>
+						</div>									
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label"><i class="fa fa-lock"></i></label>
+							<div class="col-sm-6">
+								<input type="password" class="form-control" placeholder="Password" name="password" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label"><i class="fa fa-retweet"></i></label>
+							<div class="col-sm-6">
+								<input type="password" class="form-control" placeholder="Repeat password" name="c_password"/>
+							</div>
+						</div>									
+                        <div class="space-24"></div>		
+					</fieldset>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary" onclick="userRegister(this)">
+					添加
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+<script type="text/javascript">
+function onBtnHandleUser_active(id,username,state,msg){
+	swal({
+        title: "用户操作",
+        text: `是否${msg}用户${username}`,
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes!",
+		closeOnConfirm: false
+	},function(){
+		$.ajax({
+			type: "POST",
+			url: "/user/active",
+			data: {userid:id,state:state},
+			success:function(res){
+				swal('success!','','success')
+			},
+			error:function(res){
+				swal('error!','','error');
+			}
+		})
+
+	});
+}
+function onBtnHandleUser_del(id,username,msg){
+	swal({
+        title: "用户操作",
+        text: `是否${msg}${username}`,
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes!",
+		closeOnConfirm: false
+	},function(){
+		$.ajax({
+			type: "POST",
+			url: "/user/del",
+			data: {userid:id},
+			success:function(res){
+				swal('success!','','success')
+			},
+			error:function(res){
+				swal('error!','','error');
+			}
+		})
+
+	});
+}
+</script>	
+{% endblock %}
