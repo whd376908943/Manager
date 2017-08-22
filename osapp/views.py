@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as userlogin
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -28,6 +28,7 @@ def index(request):
 
 
 @login_required
+@permission_required('auth.change_user', login_url='/noperm/')
 def user_manage(request):
     user_list = User.objects.all()
     return render(request, 'user/user_manage.html', {'userList': user_list})
@@ -52,6 +53,10 @@ def user_del(request):
     print user.username
     user.delete()
     return HttpResponse('finish')
+
+
+def noperm(request):
+    return render(request, 'noperm.html')
 
 
 
