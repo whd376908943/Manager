@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as userlogin
+from django.contrib.auth import logout as userlogout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 
@@ -55,8 +56,20 @@ def user_del(request):
     return HttpResponse('finish')
 
 
+def user_add(request):
+    username = request.POST.get('username')
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    print username, email, password
+
+
 def noperm(request):
     return render(request, 'noperm.html')
+
+
+def logout(request):
+    userlogout(request)
+    return redirect('/login')
 
 
 
