@@ -98,6 +98,21 @@ def user_change(request):
 
 
 @login_required
+def user_center(request):
+    return render(request, 'user/user_center.html')
+
+
+@login_required
+def pwd_change(request):
+    passwd = request.POST.get('password')
+    username = request.user.username
+    user = User.objects.get(username=username)
+    user.set_password(passwd)
+    user.save()
+    return HttpResponse('密码修改成功')
+
+
+@login_required
 def noperm(request):
     return render(request, 'noperm.html')
 

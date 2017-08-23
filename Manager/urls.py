@@ -29,6 +29,8 @@ urlpatterns = [
     url(r'^user/del/', views.user_del, name='user_del'),
     url(r'^user/add/', views.user_add, name='user_add'),
     url(r'^user/change/', views.user_change, name='user_change'),
+    url(r'^user/center/', views.user_center, name='user_center'),
+    url(r'^user/change_pwd/', views.pwd_change, name="pwd_change"),
     url(r'^noperm/', views.noperm, name='noperm'),
     url(r'^logout/', views.logout, name="logout")
 ]
