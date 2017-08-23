@@ -75,6 +75,7 @@ def user_add(request):
         return HttpResponse('用户名已存在!')
 
 
+@login_required
 def user_info(request, userid):
     user = User.objects.get(id=userid)
     return render(request, 'user/user_info.html', {'user_info': user})
@@ -96,10 +97,12 @@ def user_change(request):
     return HttpResponse('change success!')
 
 
+@login_required
 def noperm(request):
     return render(request, 'noperm.html')
 
 
+@login_required
 def logout(request):
     userlogout(request)
     return redirect('/login')
