@@ -6,6 +6,7 @@ from django.contrib.auth import login as userlogin
 from django.contrib.auth import logout as userlogout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 
@@ -61,6 +62,17 @@ def user_add(request):
     email = request.POST.get('email')
     password = request.POST.get('password')
     print username, email, password
+    try:
+        user = User.objects.get(username=username)
+    except ObjectDoesNotExist:
+        user = User()
+        user.username = username
+        user.email = email
+        user.password = password
+        user.save()
+        return HttpResponse('用户创建成功!')
+    else:
+        return HttpResponse('用户名已存在!')
 
 
 def noperm(request):
