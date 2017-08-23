@@ -23,10 +23,12 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
     url(r'^login/', views.login, name="login"),
-    url(r'^users/manage/', views.user_manage, name="user_manage"),
+    url(r'^user/(?P<userid>[0-9]+)/', views.user_info, name="user_info"),
+    url(r'^user/manage/', views.user_manage, name="user_manage"),
     url(r'^user/active/', views.user_active, name="user_active"),
     url(r'^user/del/', views.user_del, name='user_del'),
     url(r'^user/add/', views.user_add, name='user_add'),
+    url(r'^user/change/', views.user_change, name='user_change'),
     url(r'^noperm/', views.noperm, name='noperm'),
     url(r'^logout/', views.logout, name="logout")
 ]

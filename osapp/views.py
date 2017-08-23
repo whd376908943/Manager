@@ -75,6 +75,27 @@ def user_add(request):
         return HttpResponse('用户名已存在!')
 
 
+def user_info(request, userid):
+    user = User.objects.get(id=userid)
+    return render(request, 'user/user_info.html', {'user_info': user})
+
+
+def user_change(request):
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    email = request.POST.get('email')
+    is_superuser = request.POST.get('is_superuser')
+    user = User.objects.get(username=username)
+    user.set_password(password)
+    user.email = email
+    if int(is_superuser):
+        user.is_superuser = True
+    else:
+        user.is_active = False
+    user.save()
+    return HttpResponse('change success!')
+
+
 def noperm(request):
     return render(request, 'noperm.html')
 
